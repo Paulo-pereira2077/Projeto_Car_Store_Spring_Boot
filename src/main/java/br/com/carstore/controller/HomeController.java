@@ -6,8 +6,7 @@ import br.com.carstore.service.CarServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +36,24 @@ public class HomeController {
         List<CarDTO> allCars = service.findAll();
         model.addAttribute("cars", allCars);
         return "dashboard";
+    }
+
+    @PutMapping("/cars/{id}")
+    public String updateCar(@PathVariable String id, CarDTO carDTO){
+        service.update(id, carDTO);
+        return "redirect:/cars";
+    }
+
+    @DeleteMapping("cars/{id}")
+    public String deleteCar(@PathVariable String id){
+        service.deleteById(id);
+        return "redirect:/cars";
+    }
+
+    @GetMapping("/cars/edit/{id}")
+    public String editCar(@PathVariable String id, Model model) {
+        CarDTO car = service.findById(id);
+        model.addAttribute("carDTO", car);
+        return "edit";
     }
 }
