@@ -44,16 +44,9 @@ public class HomeController {
         return "redirect:/cars";
     }
 
-    @DeleteMapping("cars/{id}")
+    @DeleteMapping("/cars/{id}")
     public String deleteCar(@PathVariable String id){
         service.deleteById(id);
         return "redirect:/cars";
-    }
-
-    @GetMapping("/cars/edit/{id}")
-    public String editCar(@PathVariable String id, Model model) {
-        CarDTO car = service.findById(id);
-        model.addAttribute("carDTO", car);
-        return "edit";
     }
 }

@@ -18,6 +18,14 @@ public class RestController {
         this.carService = service;
     }
 
+    // teste do postman
+//    @GetMapping("/api/cars")
+//    public ResponseEntity<String > teste() {
+//        List<CarDTO> allCars = carService.findAll();
+//        CarResponseBody carResponseBody = new CarResponseBody(allCars);
+//        return ResponseEntity.ok("foi");
+//    }
+
     @GetMapping("/api/cars")
     public ResponseEntity<CarResponseBody> home() {
         List<CarDTO> allCars = carService.findAll();
@@ -34,7 +42,7 @@ public class RestController {
     @DeleteMapping("/api/cars/{id}")
     public ResponseEntity<CarDTO> deleteCar(@PathVariable String id) {
         this.carService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/api/cars/{id}")

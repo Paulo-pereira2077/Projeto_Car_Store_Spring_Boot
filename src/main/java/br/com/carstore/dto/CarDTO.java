@@ -38,8 +38,7 @@ public class CarDTO {
         return id;
     }
 
-    public String setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return id;
     }
 }

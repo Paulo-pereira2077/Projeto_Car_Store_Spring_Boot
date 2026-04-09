@@ -7,15 +7,15 @@ public class CarResponseBody {
 
     private List<CarDTO> cars;
 
-    public CarResponseBody(List<CarDTO> allCars) {
-        this.cars = allCars;
+    public CarResponseBody(List<CarDTO> cars) {
+        this.cars = cars;
     }
 
-    public CarDTO getCar() {
-        return (CarDTO) cars;
+    public List<CarDTO> getCars() {
+        return cars;
     }
 
-    public void setCar(CarDTO car) {
+    public void setCars(List<CarDTO> cars) {
         this.cars = cars;
     }
 }
