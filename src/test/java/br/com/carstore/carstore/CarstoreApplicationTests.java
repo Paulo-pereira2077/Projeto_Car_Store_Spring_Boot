@@ -1,4 +1,4 @@
-package br.com.carstore;
+package br.com.carstore.carstore;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

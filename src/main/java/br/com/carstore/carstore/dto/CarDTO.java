@@ -1,4 +1,4 @@
-package br.com.carstore.dto;
+package br.com.carstore.carstore.dto;
 
 
 import jakarta.validation.constraints.NotBlank;

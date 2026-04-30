@@ -1,6 +1,6 @@
-package br.com.carstore.service;
+package br.com.carstore.carstore.service;
 
-import br.com.carstore.dto.CarDTO;
+import br.com.carstore.carstore.dto.CarDTO;
 
 import java.util.List;
 

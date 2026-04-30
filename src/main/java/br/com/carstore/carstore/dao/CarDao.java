@@ -1,6 +1,6 @@
-package br.com.carstore.dao;
+package br.com.carstore.carstore.dao;
 
-import br.com.carstore.model.Car;
+import br.com.carstore.carstore.model.Car;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

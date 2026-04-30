@@ -1,4 +1,4 @@
-package br.com.carstore.model;
+package br.com.carstore.carstore.model;
 
 public class Car {
 

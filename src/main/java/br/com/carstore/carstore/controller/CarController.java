@@ -1,6 +1,6 @@
-package br.com.carstore.controller;
+package br.com.carstore.carstore.controller;
 
-import br.com.carstore.dto.CarDTO;
+import br.com.carstore.carstore.dto.CarDTO;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

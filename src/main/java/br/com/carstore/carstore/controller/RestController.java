@@ -1,8 +1,8 @@
-package br.com.carstore.controller;
+package br.com.carstore.carstore.controller;
 
-import br.com.carstore.dto.CarDTO;
-import br.com.carstore.dto.CarResponseBody;
-import br.com.carstore.service.CarService;
+import br.com.carstore.carstore.dto.CarDTO;
+import br.com.carstore.carstore.dto.CarResponseBody;
+import br.com.carstore.carstore.service.CarService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
