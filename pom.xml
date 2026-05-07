@@ -12,7 +12,7 @@
 	<artifactId>carstore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>carstore</name>
-	<description>Atividade do dia 12-03-2026</description>
+	<description>Projeto das aulas de Desenvolvimento Web</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -70,6 +70,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
 	</dependencies>
