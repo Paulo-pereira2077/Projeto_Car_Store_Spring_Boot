@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,19 +24,13 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("carDTO", new CarDTO());
-        return "index";
-    }
-
-    @PostMapping("/cars")
-    public String createCar(CarDTO carDTO, BindingResult result) {
-        service.save(carDTO);
-        return "redirect:/cars";
+        return "redirect:/public/cars";
     }
 
     @GetMapping("/cars")
     public String getCars(Model model) {
         List<CarDTO> allCars = service.findAll();
         model.addAttribute("cars", allCars);
-        return "dashboard";
+        return "public/dashboard";
     }
 }
