@@ -2,6 +2,8 @@ package br.com.carstore.controller;
 
 import br.com.carstore.dto.CarDTO;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,5 +35,9 @@ public class CarController {
     public String sucesso() {
         return "sucesso";
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/api/admin/stats")
+    public ResponseEntity<?> stats() { return ResponseEntity.ok().build(); }
 
 }

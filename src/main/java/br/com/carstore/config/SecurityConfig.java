@@ -4,20 +4,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // Usa BCrypt, que é o padrão seguro para hashear senhas.
+        return new BCryptPasswordEncoder();
+    }
 
     // ← ADICIONAR: Injetar o filtro
     private final JwtRequestFilter jwtRequestFilter;
@@ -25,6 +33,41 @@ public class SecurityConfig {
     // ← ADICIONAR: Construtor com @Lazy
     public SecurityConfig(@Lazy JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                // Aplica para tudo que NÃO for /api/** (já capturado pelo filtro acima)
+                .securityMatcher("/**")
+                .authorizeHttpRequests(auth -> auth
+                        // 1. Permite rotas públicas e arquivos estáticos
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/login/**", "/error").permitAll()
+
+                        // 2. Protege as rotas do painel
+                        .requestMatchers("/admin/**").authenticated()
+
+                        // 3. Qualquer outra requisição (deve ser sempre a ÚLTIMA regra)
+                        .anyRequest().permitAll()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .defaultSuccessUrl("/admin/cars", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
+                // Necessário para o console do H2 DB
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                );
+
+        return http.build();
     }
 
     @Bean
@@ -52,47 +95,10 @@ public class SecurityConfig {
 
     }
 
+    // ← ADICIONAR: AuthenticationManager como Bean
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/**") // Aplica para tudo que NÃO for /api/** (já capturado pelo filtro acima)
-                .authorizeHttpRequests(auth -> auth
-                        // Permite acesso a recursos estáticos e rota de login
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/login/**").permitAll()
-                        // Protege as telas do administrador
-                        .requestMatchers("/admin/**").authenticated()
-                        // Páginas públicas
-                        .anyRequest().permitAll()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .failureUrl("/login?error")
-                        .defaultSuccessUrl("/admin/cars", true)
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                )
-                // Necessário para o console do H2 DB
-                .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                );
-
-                // ← PREENCHER: Configuração para web (não-API)
-                http.csrf(AbstractHttpConfigurer::disable)
-                        .authorizeHttpRequests(auth -> auth
-                                .anyRequest().permitAll()  // Ajuste conforme necessário
-                        );
-
-        return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // Usa BCrypt, que é o padrão seguro para hashear senhas.
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     // Este método deve ser adicionado DENTRO da classe SecurityConfig
@@ -111,12 +117,6 @@ public class SecurityConfig {
         // Gerenciador em memória (apenas para testes)
         return new org.springframework.security.provisioning.InMemoryUserDetailsManager(user);
 
-    }
-
-    // ← ADICIONAR: AuthenticationManager como Bean
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
     }
 
 }
