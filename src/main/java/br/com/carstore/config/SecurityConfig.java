@@ -54,12 +54,39 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    // ← PREENCHER: Configuração para web (não-API)
-            http.csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(auth -> auth
-                            .anyRequest().permitAll()  // Ajuste conforme necessário
-                    );
-            return http.build();
+        http
+                .securityMatcher("/**") // Aplica para tudo que NÃO for /api/** (já capturado pelo filtro acima)
+                .authorizeHttpRequests(auth -> auth
+                        // Permite acesso a recursos estáticos e rota de login
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/login/**").permitAll()
+                        // Protege as telas do administrador
+                        .requestMatchers("/admin/**").authenticated()
+                        // Páginas públicas
+                        .anyRequest().permitAll()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .defaultSuccessUrl("/admin/cars", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                )
+                // Necessário para o console do H2 DB
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                );
+
+                // ← PREENCHER: Configuração para web (não-API)
+                http.csrf(AbstractHttpConfigurer::disable)
+                        .authorizeHttpRequests(auth -> auth
+                                .anyRequest().permitAll()  // Ajuste conforme necessário
+                        );
+
+        return http.build();
     }
 
     @Bean
