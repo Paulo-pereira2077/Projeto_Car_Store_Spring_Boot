@@ -26,7 +26,7 @@ public class CarDao {
             dto.setId(rs.getString("id"));
             dto.setName(rs.getString("name"));
             dto.setColor(rs.getString("color"));
-            dto.setColor(rs.getString("brand"));
+            dto.setBrand(rs.getString("brand"));
             return dto;
         }
 
@@ -62,7 +62,7 @@ public class CarDao {
     // UPDATE car SET name = ?, color = ? WHERE id = ?
     public void update(String id, CarDTO carDTO) {
 
-        String sql = "UPDATE car SET name = ?, color = ? WHERE id = ?, brand = ? WHERE id = ?";
+        String sql = "UPDATE car SET name = ?, color = ?, brand = ? WHERE id = ?";
 
         jdbc.update(sql, carDTO.getName(), carDTO.getColor(), carDTO.getBrand(), Long.valueOf(id));
 

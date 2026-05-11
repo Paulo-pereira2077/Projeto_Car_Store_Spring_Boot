@@ -50,11 +50,11 @@ public class CarServiceImpl implements CarService {
 
     }
 
-//    @Override
-//    public CarDTO findById(String id) {
-//
-//        return carDao.findById(id);
-//
-//    }
+    @Override
+    public CarDTO findById(String id) {
+
+        return carDao.findById(id);
+
+    }
 
 }

@@ -27,7 +27,7 @@ public class HomeController {
         return "redirect:/public/cars";
     }
 
-    @GetMapping("/cars")
+    @GetMapping("/public/cars")
     public String getCars(Model model) {
         List<CarDTO> allCars = service.findAll();
         model.addAttribute("cars", allCars);

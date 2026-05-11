@@ -24,30 +24,34 @@ public class AdminController {
     @GetMapping("/admin")
     public String index(Model model) {
         model.addAttribute("carDTO", new CarDTO());
-        return "admin/index";
+        return "/admin/index";
     }
 
-    @PostMapping("admin/cars")
+    @PostMapping("/admin/cars")
     public String createCar(CarDTO carDTO, BindingResult result) {
-        service.save(carDTO);
-        return "redirect:admin/cars";
+        if (carDTO.getId() != null && !carDTO.getId().isEmpty()) {
+            service.update(carDTO.getId(), carDTO);
+        } else {
+            service.save(carDTO);
+        }
+        return "redirect:/admin/cars";
     }
 
-    @GetMapping("admin/cars")
+    @GetMapping("/admin/cars")
     public String getCars(Model model) {
         List<CarDTO> allCars = service.findAll();
         model.addAttribute("cars", allCars);
-        return "admin/dashboard";
+        return "/admin/dashboard";
     }
 
-    @GetMapping("admin/cars/edit")
+    @GetMapping("/admin/cars/edit")
     public String editCar(@RequestParam("id") String id, Model model) {
 
         CarDTO car = service.findById(id);
 
         if (car == null) {
 
-            return "redirect:admin/cars";
+            return "redirect:/admin/cars";
 
         }
         model.addAttribute("carDTO", car);
@@ -56,7 +60,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("admin/cars/delete")
+    @PostMapping("/admin/cars/delete")
     public String deleteCar(@RequestParam("id") String id, Model model) {
 
         service.deleteById(id);
@@ -64,7 +68,7 @@ public class AdminController {
         List<CarDTO> cars = service.findAll();
         model.addAttribute("cars", cars);
 
-        return "redirect:admin/cars";
+        return "redirect:/admin/cars";
 
     }
 
