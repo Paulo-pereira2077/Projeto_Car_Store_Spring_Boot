@@ -11,8 +11,8 @@ public class CarResponseBody {
         this.cars = allCars;
     }
 
-    public CarDTO getCar() {
-        return (CarDTO) cars;
+    public List<CarDTO> getCar() {
+        return cars;
     }
 
     public void setCar(CarDTO car) {

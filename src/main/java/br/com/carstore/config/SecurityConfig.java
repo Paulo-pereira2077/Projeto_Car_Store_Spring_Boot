@@ -36,6 +36,31 @@ public class SecurityConfig {
     }
 
     @Bean
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+
+        // Regra 1: Configuração para API (Stateless) - Rotas /api/**
+        http.securityMatcher("/api/**") // Aplica ESTA regra SOMENTE a /api/**
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sem sessão no servidor
+                )
+
+                // ← ADICIONAR: Filtro JWT
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // Neste ponto, adicionaremos o Filtro JWT posteriormente.
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll() // Endpoint de Login API é público
+                        .anyRequest().authenticated() // Todas as outras rotas API exigem autenticação
+                );
+
+
+        return http.build();
+
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // Aplica para tudo que NÃO for /api/** (já capturado pelo filtro acima)
@@ -68,31 +93,6 @@ public class SecurityConfig {
                 );
 
         return http.build();
-    }
-
-    @Bean
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-
-        // Regra 1: Configuração para API (Stateless) - Rotas /api/**
-        http.securityMatcher("/api/**") // Aplica ESTA regra SOMENTE a /api/**
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Sem sessão no servidor
-                )
-
-                // ← ADICIONAR: Filtro JWT
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-
-                // Neste ponto, adicionaremos o Filtro JWT posteriormente.
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Endpoint de Login API é público
-                        .anyRequest().authenticated() // Todas as outras rotas API exigem autenticação
-                );
-
-
-        return http.build();
-
     }
 
     // ← ADICIONAR: AuthenticationManager como Bean
