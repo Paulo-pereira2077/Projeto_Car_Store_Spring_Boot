@@ -102,21 +102,21 @@ public class SecurityConfig {
     }
 
     // Este método deve ser adicionado DENTRO da classe SecurityConfig
-    @Bean
-    public org.springframework.security.core.userdetails.UserDetailsService users(PasswordEncoder passwordEncoder) {
-
-        // Detalhes do usuário de teste
-        org.springframework.security.core.userdetails.UserDetails user =
-                org.springframework.security.core.userdetails.User.builder()
-                        .username("admin")
-                        // A senha 'admin' será codificada pelo BCryptPasswordEncoder
-                        .password(passwordEncoder.encode("admin"))
-                        .roles("USER", "ADMIN") // Roles para uso futuro em autorização
-                        .build();
-
-        // Gerenciador em memória (apenas para testes)
-        return new org.springframework.security.provisioning.InMemoryUserDetailsManager(user);
-
-    }
+//    @Bean
+//    public org.springframework.security.core.userdetails.UserDetailsService users(PasswordEncoder passwordEncoder) {
+//
+//        // Detalhes do usuário de teste
+//        org.springframework.security.core.userdetails.UserDetails user =
+//                org.springframework.security.core.userdetails.User.builder()
+//                        .username("admin")
+//                        // A senha 'admin' será codificada pelo BCryptPasswordEncoder
+//                        .password(passwordEncoder.encode("admin"))
+//                        .roles("USER", "ADMIN") // Roles para uso futuro em autorização
+//                        .build();
+//
+//        // Gerenciador em memória (apenas para testes)
+//        return new org.springframework.security.provisioning.InMemoryUserDetailsManager(user);
+//
+//    }
 
 }

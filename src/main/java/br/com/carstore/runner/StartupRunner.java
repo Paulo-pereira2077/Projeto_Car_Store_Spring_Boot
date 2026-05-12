@@ -9,9 +9,11 @@ import br.com.carstore.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+@Component
 public class StartupRunner implements CommandLineRunner {
 
     private final CarDao carDao;

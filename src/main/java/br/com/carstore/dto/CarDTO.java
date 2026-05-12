@@ -17,6 +17,23 @@ public class CarDTO {
 
     private String brand;
 
+    private String version;
+
+    private String year;
+
+    private String modelYear;
+
+    public CarDTO(){}
+
+    public CarDTO(String name, String color, String brand, String version, String year, String modelYear) {
+        this.name = name;
+        this.color = color;
+        this.brand = brand;
+        this.version = version;
+        this.year = year;
+        this.modelYear = modelYear;
+    }
+
     // Getters e Setters
     public String getName() {
         return name;
@@ -49,5 +66,29 @@ public class CarDTO {
     public String setId(String id) {
         this.id = id;
         return id;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getModelYear() {
+        return modelYear;
+    }
+
+    public void setModelYear(String modelYear) {
+        this.modelYear = modelYear;
     }
 }

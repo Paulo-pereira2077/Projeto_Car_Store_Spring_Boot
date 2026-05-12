@@ -36,8 +36,4 @@ public class CarController {
         return "sucesso";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/api/admin/stats")
-    public ResponseEntity<?> stats() { return ResponseEntity.ok().build(); }
-
 }
