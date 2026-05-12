@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import java.util.List;
 
 @Controller
@@ -29,6 +30,7 @@ public class AdminController {
         return "/admin/index";
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // <-- Bloqueia a criação/edição
     @PostMapping("/admin/cars")
     public String createCar(CarDTO carDTO, BindingResult result) {
         if (carDTO.getId() != null && !carDTO.getId().isEmpty()) {
@@ -62,6 +64,7 @@ public class AdminController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // <-- Bloqueia a exclusão
     @PostMapping("/admin/cars/delete")
     public String deleteCar(@RequestParam("id") String id, Model model) {
 

@@ -4,6 +4,8 @@ import br.com.carstore.dto.CarDTO;
 import br.com.carstore.dto.CarResponseBody;
 import br.com.carstore.service.CarService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -25,12 +27,16 @@ public class RestController {
         return ResponseEntity.ok(carResponseBody);
     }
 
+    // Apenas ADMIN pode cadastrar carros (Usando @PreAuthorize)
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/api/cars")
     public ResponseEntity<CarDTO> createCar(@RequestBody CarDTO car) {
         this.carService.save(car);
         return ResponseEntity.ok().build();
     }
 
+    // Apenas ADMIN pode deletar (Usando @Secured)
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/api/cars/{id}")
     public ResponseEntity<CarDTO> deleteCar(@PathVariable String id) {
         this.carService.deleteById(id);
