@@ -31,6 +31,7 @@ public class AdminController {
         return "/admin/index";
     }
 
+    //Corrigindo erro do commit
     @PreAuthorize("hasRole('ADMIN')") // <-- Bloqueia a criação/edição
     @PostMapping("/admin/cars")
     public String createCar(@ModelAttribute CarDTO carDTO, BindingResult result) {
