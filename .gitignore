@@ -20,6 +20,7 @@ target/
 *.ipr
 .postman
 .postman/globals/
+application-aws.properties
 
 ### NetBeans ###
 /nbproject/private/
